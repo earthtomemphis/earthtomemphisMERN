@@ -1,7 +1,14 @@
 const express = require('express');
 const products = require('./data/products');
+const cors = require('cors');
 
 const app = express();
+
+const corsOpts = {
+	origin: 'http://localhost:5173',
+};
+
+app.use(cors(corsOpts));
 
 app.get('/', (req, res) => {
 	res.send('API is running');
