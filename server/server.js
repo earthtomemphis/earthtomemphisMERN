@@ -1,9 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const products = require('./data/products');
+import express from 'express';
+import cors from 'cors';
+import { config } from 'dotenv';
+import products from './data/products.js';
 
-dotenv.config();
+config();
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.get('/api/products', (req, res) => {
 });
 
 app.get('/api/products/:id', (req, res) => {
-	const product = products.find((product) => product._id === req.params.id);
+	const product = find((product) => product._id === req.params.id);
 	res.json(product);
 });
 
