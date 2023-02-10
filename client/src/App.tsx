@@ -1,26 +1,35 @@
-import * as React from 'react';
-import { Container } from 'react-bootstrap';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import HomePage from './pages/HomePage';
-import ProductPage from './pages/ProductPage';
+import React from 'react';
+import { connect } from 'react-redux';
+import { getPosts, Post } from './actions';
+import { StoreState } from './reducers';
 
-const App = () => {
-	return (
-		<BrowserRouter>
-			<Header />
-			<main className="py-3">
-				<Container>
-					<Routes>
-						<Route path="/" element={<HomePage />} />
-						<Route path="/product/:id" element={<ProductPage />} />
-					</Routes>
-				</Container>
-			</main>
-			<Footer />
-		</BrowserRouter>
-	);
+interface AppProps {
+	posts: Post[];
+	getPosts: Function;
+}
+
+class _App extends React.Component<AppProps> {
+	constructor(props: AppProps) {
+		super(props);
+	}
+
+	componentDidMount(): void {
+		this.props.getPosts();
+	}
+
+	renderList(): JSX.Element[] {
+		return this.props.posts.map((post: Post) => {
+			return <div key={post.id}>{post.title}</div>;
+		});
+	}
+
+	render(): React.ReactNode {
+		return <div>{this.renderList()}</div>;
+	}
+}
+
+const mapStateToProps = ({ posts }: StoreState): { posts: Post[] } => {
+	return { posts };
 };
 
-export default App;
+export const App = connect(mapStateToProps, { getPosts })(_App);

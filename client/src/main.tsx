@@ -1,13 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import App from './App';
-import './bootstrap.min.css';
+import { ChakraBaseProvider } from '@chakra-ui/react';
+import { App } from './App';
 import './index.css';
-import store from './store';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+import { reducers } from './reducers';
+
+const store = createStore(reducers, applyMiddleware(thunk));
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-	<Provider store={store}>
-		<App />
-	</Provider>
+	<React.StrictMode>
+		<Provider store={store}>
+			<ChakraBaseProvider>
+				<App />
+			</ChakraBaseProvider>
+		</Provider>
+	</React.StrictMode>
 );
